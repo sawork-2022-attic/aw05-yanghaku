@@ -1,15 +1,13 @@
-package com.micropos.products;
+package com.micropos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-@SpringBootApplication
 @EnableDiscoveryClient
-@EnableCaching
-public class ProductsApplication {
+@SpringBootApplication
+public class APIGatewayApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ProductsApplication.class, args);
+        SpringApplication.run(APIGatewayApplication.class, args);
     }
 }

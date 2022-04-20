@@ -13,4 +13,18 @@
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
+  <component name="UnattendedHostPersistenceState">
+    <option name="openedFilesInfos">
+      <list>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="197" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/pos-carts/src/main/resources/application.properties" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="282" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/pos-carts/src/main/java/com/micropos/carts/CartsApplication.java" />
+        </OpenedFileInfo>
+      </list>
+    </option>
+  </component>
 </project>

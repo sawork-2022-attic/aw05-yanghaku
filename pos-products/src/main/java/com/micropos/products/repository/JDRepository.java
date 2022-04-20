@@ -14,17 +14,14 @@ import java.util.List;
 
 @Repository
 public class JDRepository implements ProductRepository {
-    private List<Product> products = null;
+
+    private static class ParseJDSingleton {
+        private static final List<Product> products = parseJD("Java");
+    }
 
     @Override
     public List<Product> allProducts() {
-        try {
-            if (products == null)
-                products = parseJD("Java");
-        } catch (IOException e) {
-            products = new ArrayList<>();
-        }
-        return products;
+        return ParseJDSingleton.products;
     }
 
     @Override
@@ -37,23 +34,33 @@ public class JDRepository implements ProductRepository {
         return null;
     }
 
-    public static List<Product> parseJD(String keyword) throws IOException {
+    public static List<Product> parseJD(String keyword) {
         String url = "https://search.jd.com/Search?keyword=" + keyword;
-        Document document = Jsoup.parse(new URL(url), 10000);
-        Element element = document.getElementById("J_goodsList");
-        Elements elements = element.getElementsByTag("li");
         List<Product> list = new ArrayList<>();
 
-        for (Element el : elements) {
-            String id = el.attr("data-spu");
-            String img = "https:".concat(el.getElementsByTag("img").eq(0).attr("data-lazy-img"));
-            String price = el.getElementsByAttribute("data-price").text();
-            String title = el.getElementsByClass("p-name").eq(0).text();
-            if (title.indexOf("，") >= 0)
-                title = title.substring(0, title.indexOf("，"));
+        int retryTime = 20;
+        while ((retryTime--) != 0) {
+            try { // 如果是获取错误, 就重试(不能返回空列表, 否则在缓存状态下, 一直是空的)
+                Document document = Jsoup.parse(new URL(url), 10000);
+                Element element = document.getElementById("J_goodsList");
+                Elements elements = element.getElementsByTag("li");
+                list.clear();
 
-            Product product = new Product(id, title, Double.parseDouble(price), img);
-            list.add(product);
+                for (Element el : elements) {
+                    String id = el.attr("data-spu");
+                    String img = "https:".concat(el.getElementsByTag("img").eq(0).attr("data-lazy-img"));
+                    String price = el.getElementsByAttribute("data-price").text();
+                    String title = el.getElementsByClass("p-name").eq(0).text();
+                    if (title.indexOf("，") >= 0)
+                        title = title.substring(0, title.indexOf("，"));
+
+                    Product product = new Product(id, title, Double.parseDouble(price), img);
+                    list.add(product);
+                }
+                return list;
+
+            } catch (Exception ignored) {
+            }
         }
         return list;
     }

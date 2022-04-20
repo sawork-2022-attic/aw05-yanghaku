@@ -11,5 +11,11 @@
 
     <artifactId>pos-gateway</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+    </dependencies>
 </project>
